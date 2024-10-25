@@ -86,6 +86,7 @@ d1 = st.sidebar.selectbox("Embedding Size", ["2", "64", "10"])
 d2 = st.sidebar.selectbox("Context length", ["3", "5", "9"])
 # d3 = st.sidebar.selectbox("Random state",["4000002","4000005","4000008"])
 # Textboxes
+block_size=int(d2)
 
 t1 = st.sidebar.text_input("Input text", "")
 t2 = st.sidebar.text_input("Number of Words to predict", "")
