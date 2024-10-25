@@ -1,4 +1,4 @@
-
+import torch
 import re
 
 # Define the path to the text file containing Paul Graham's essays
