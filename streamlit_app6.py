@@ -110,9 +110,9 @@ st.markdown("## Next k character prediction app")
 # Sliders for context size and embedding dimension
 
 # Streamlit UI
-st.set_page_config(page_title="Next Word Predictor", layout="centered")
-st.title("🔮 Next Word Prediction App")
-st.write("Provide a text prompt, and the model will predict the next possible words based on your selected settings.")
+# st.set_page_config(page_title="Next Word Predictor", layout="centered")
+# st.title("🔮 Next Word Prediction App")
+# st.write("Provide a text prompt, and the model will predict the next possible words based on your selected settings.")
 
 st.sidebar.header("🔧 Settings")
 
@@ -145,20 +145,20 @@ if st.button("Predict"):
 
 
 
-st.markdown(
-    """
-    <style>
-    .css-1aumxhk { background-color: #F0F2F6; }
-    .stButton>button { 
-        font-size: 1.1em; 
-        font-weight: bold; 
-        background-color: #4CAF50; 
-        color: white; 
-        border: none;
-        padding: 10px 20px;
-        margin-top: 10px;
-    }
-    .stTextInput>input { font-size: 1.1em; }
-    </style>
-    """, unsafe_allow_html=True
-)
+# st.markdown(
+#     """
+#     <style>
+#     .css-1aumxhk { background-color: #F0F2F6; }
+#     .stButton>button { 
+#         font-size: 1.1em; 
+#         font-weight: bold; 
+#         background-color: #4CAF50; 
+#         color: white; 
+#         border: none;
+#         padding: 10px 20px;
+#         margin-top: 10px;
+#     }
+#     .stTextInput>input { font-size: 1.1em; }
+#     </style>
+#     """, unsafe_allow_html=True
+# )
