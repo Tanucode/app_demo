@@ -70,7 +70,7 @@ def predict_next_words(input_text, k):
 
     with torch.no_grad():
         predictions =model1(input_tensor)
-    top_k_indices = torch.topk(predictions[0, -1, :], k).indices
+    top_k_indices = torch.topk(predictions[0,:], k).indices
     return [itos[idx.item()] for idx in top_k_indices]
 
 
