@@ -106,6 +106,13 @@ st.markdown("## Next k character prediction app")
 
 # Sliders for context size and embedding dimension
 
+# Streamlit UI
+st.set_page_config(page_title="Next Word Predictor", layout="centered")
+st.title("🔮 Next Word Prediction App")
+st.write("Provide a text prompt, and the model will predict the next possible words based on your selected settings.")
+
+st.sidebar.header("🔧 Settings")
+
 d1 = st.sidebar.selectbox("Embedding Size", ["2", "64", "10"])
 d2 = st.sidebar.selectbox("Context length", ["3", "5", "9"])
 # d3 = st.sidebar.selectbox("Random state",["4000002","4000005","4000008"])
@@ -131,3 +138,24 @@ if st.button("Predict"):
     # prediction = predict_next_words(model1,t1,int(t2),int(d2))
     prediction = predict_next_words(t1,int(t2))
     st.write(prediction)
+
+
+
+
+st.markdown(
+    """
+    <style>
+    .css-1aumxhk { background-color: #F0F2F6; }
+    .stButton>button { 
+        font-size: 1.1em; 
+        font-weight: bold; 
+        background-color: #4CAF50; 
+        color: white; 
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+    .stTextInput>input { font-size: 1.1em; }
+    </style>
+    """, unsafe_allow_html=True
+)
