@@ -88,7 +88,7 @@ d2 = st.sidebar.selectbox("Context length", ["3", "5", "9"])
 # Textboxes
 
 t1 = st.sidebar.text_input("Input text", "")
-t2 = st.sidebar.text_input("Number of Chars to predict", "")
+t2 = st.sidebar.text_input("Number of Words to predict", "")
 
 emb={"2":0,"5":1,"10":2}
 context={"3":0,"6":1,"9":2}
@@ -103,5 +103,6 @@ if st.button("Predict"):
   
     model1.eval()
 # Use the scripted model for prediction
-    prediction = predict_next_words(model1,t1,int(t2),int(d2))
+    # prediction = predict_next_words(model1,t1,int(t2),int(d2))
+    prediction = predict_next_words(t1,int(t2))
     st.write(prediction)
