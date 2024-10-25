@@ -63,16 +63,40 @@ class NextWordMLP(nn.Module):
         return x
 
 
+# def predict_next_words(input_text, k):
+#     # Convert input text to indices and predict next words
+#     input_indices = [stoi[word] for word in input_text.split()[-block_size:]]
+#     input_tensor = torch.tensor(input_indices).unsqueeze(0)
+
+#     with torch.no_grad():
+#         predictions =model1(input_tensor)
+#     top_k_indices = torch.topk(predictions[0,:], k).indices
+#     return [itos[idx.item()] for idx in top_k_indices]
+
+import difflib
+
+def replace_oov_words(input_text):
+    processed_words = []
+    for word in input_text.split():
+        if word in stoi:
+            processed_words.append(word)
+        else:
+            # Find closest match
+            similar_words = difflib.get_close_matches(word, list(stoi.keys()), n=1)
+            replacement = similar_words[0] if similar_words else '<OOV>'
+            processed_words.append(replacement)
+    return processed_words
+
+
 def predict_next_words(input_text, k):
-    # Convert input text to indices and predict next words
-    input_indices = [stoi[word] for word in input_text.split()[-block_size:]]
+    processed_words = replace_oov_words(input_text)
+    input_indices = [stoi[word] for word in processed_words[-block_size:]]
     input_tensor = torch.tensor(input_indices).unsqueeze(0)
 
     with torch.no_grad():
-        predictions =model1(input_tensor)
-    top_k_indices = torch.topk(predictions[0,:], k).indices
+        predictions = model1(input_tensor)
+    top_k_indices = torch.topk(predictions[0, :], k).indices
     return [itos[idx.item()] for idx in top_k_indices]
-
 
 
 
