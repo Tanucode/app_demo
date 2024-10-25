@@ -1,6 +1,7 @@
 import torch
 import re
 
+
 # Define the path to the text file containing Paul Graham's essays
 filepath = 'paul_graham_essays.txt'
 
@@ -101,6 +102,8 @@ def predict_next_words(input_text, k):
 
 
 import streamlit as st
+
+st.set_page_config(page_title="Next Word Predictor", layout="centered")
 
 st.markdown("## Next k character prediction app")
 
