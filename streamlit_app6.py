@@ -128,7 +128,7 @@ t2 = st.sidebar.text_input("Number of Words to predict", "")
 emb={"32":0,"64":1,"128":2}
 context={"3":0,"5":1}
 # Predict button
-if st.button("Predict"):
+if st.button("Predict",layout="centered"):
     # Create a new model with the user-specified embedding
     model1 = NextWordMLP(int(d2),len(stoi), int(d1), 10)
     # model_number=emb[str(d1)]*3+context[str(d2)]
