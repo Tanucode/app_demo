@@ -134,7 +134,7 @@ if st.button("Predict"):
     # model_number=emb[str(d1)]*3+context[str(d2)]
     model_number=0
     # Load the pre-trained weights into the new model
-    model1.load_state_dict(torch.load(f"./model_{i}_e{int(d1)}_c{int(d2)}.pt"), strict=False)
+    model1.load_state_dict(torch.load(f"./model_e{int(d1)}_c{int(d2)}.pt"), strict=False)
   
     model1.eval()
 # Use the scripted model for prediction
