@@ -105,7 +105,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Next Word Predictor", layout="centered")
 
-st.markdown("## Next k word prediction app 🔮")
+st.markdown("## 🌸Next k word prediction app🌸")
 
 # Sliders for context size and embedding dimension
 
