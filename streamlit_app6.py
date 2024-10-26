@@ -116,8 +116,8 @@ st.markdown("## Next k word prediction app 🔮")
 
 st.sidebar.header("🔧 Settings")
 
-d1 = st.sidebar.selectbox("Embedding Size", ["2", "64", "10"])
-d2 = st.sidebar.selectbox("Context length", ["3", "5", "9"])
+d1 = st.sidebar.selectbox("Embedding Size", ["32", "64", "128"])
+d2 = st.sidebar.selectbox("Context length", ["3", "5"])
 # d3 = st.sidebar.selectbox("Random state",["4000002","4000005","4000008"])
 # Textboxes
 block_size=int(d2)
@@ -125,8 +125,8 @@ block_size=int(d2)
 t1 = st.sidebar.text_input("Input text", "")
 t2 = st.sidebar.text_input("Number of Words to predict", "")
 
-emb={"2":0,"5":1,"10":2}
-context={"3":0,"6":1,"9":2}
+emb={"32":0,"64":1,"128":2}
+context={"3":0,"5":1}
 # Predict button
 if st.button("Predict"):
     # Create a new model with the user-specified embedding
@@ -134,7 +134,7 @@ if st.button("Predict"):
     # model_number=emb[str(d1)]*3+context[str(d2)]
     model_number=0
     # Load the pre-trained weights into the new model
-    model1.load_state_dict(torch.load("model_0.pt"), strict=False)
+    model1.load_state_dict(torch.load(f"./model_{i}_e{int(d1)}_c{int(d2)}.pt"), strict=False)
   
     model1.eval()
 # Use the scripted model for prediction
