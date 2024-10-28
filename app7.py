@@ -49,32 +49,70 @@ import torch.nn as nn
 
 
 
+# class NextWordMLP(nn.Module):
+#     def __init__(self, block_size, vocab_size, emb_dim, hidden_size):
+#         super().__init__()
+#         self.emb = nn.Embedding(vocab_size, emb_dim)
+#         self.lin1 = nn.Linear(block_size * emb_dim, hidden_size)
+#         self.lin2 = nn.Linear(hidden_size, vocab_size)
+
+#     def forward(self, x):
+#         x = self.emb(x)  # Convert word indices to embeddings
+#         x = x.view(x.shape[0], -1)  # Flatten embeddings
+#         x = torch.relu(self.lin1(x))  # First layer + ReLU activation
+#         x = self.lin2(x)  # Second layer, output vocab_size logits
+#         return x
+
+
+# # def predict_next_words(input_text, k):
+# #     # Convert input text to indices and predict next words
+# #     input_indices = [stoi[word] for word in input_text.split()[-block_size:]]
+# #     input_tensor = torch.tensor(input_indices).unsqueeze(0)
+
+# #     with torch.no_grad():
+# #         predictions =model1(input_tensor)
+# #     top_k_indices = torch.topk(predictions[0,:], k).indices
+# #     return [itos[idx.item()] for idx in top_k_indices]
+
+# import difflib
+
+# def replace_oov_words(input_text):
+#     processed_words = []
+#     for word in input_text.split():
+#         if word in stoi:
+#             processed_words.append(word)
+#         else:
+#             # Find closest match
+#             similar_words = difflib.get_close_matches(word, list(stoi.keys()), n=1)
+#             replacement = similar_words[0] if similar_words else '<OOV>'
+#             processed_words.append(replacement)
+#     return processed_words
+
+
+# def predict_next_words(input_text, k):
+#     processed_words = replace_oov_words(input_text)
+#     input_indices = [stoi[word] for word in processed_words[-block_size:]]
+#     input_tensor = torch.tensor(input_indices).unsqueeze(0)
+
+#     with torch.no_grad():
+#         predictions = model1(input_tensor)
+#     top_k_indices = torch.topk(predictions[0, :], k).indices
+#     return [itos[idx.item()] for idx in top_k_indices]
+
 class NextWordMLP(nn.Module):
-    def __init__(self, block_size, vocab_size, emb_dim, hidden_size):
+    def __init__(self, block_size, vocab_size, emb_dim, hidden_size, activation='relu'):
         super().__init__()
         self.emb = nn.Embedding(vocab_size, emb_dim)
         self.lin1 = nn.Linear(block_size * emb_dim, hidden_size)
         self.lin2 = nn.Linear(hidden_size, vocab_size)
+        self.activation = nn.ReLU() if activation == 'relu' else nn.Tanh()
 
     def forward(self, x):
         x = self.emb(x)  # Convert word indices to embeddings
         x = x.view(x.shape[0], -1)  # Flatten embeddings
-        x = torch.relu(self.lin1(x))  # First layer + ReLU activation
+        x = self.activation(self.lin1(x))  # First layer + activation
         x = self.lin2(x)  # Second layer, output vocab_size logits
         return x
-
-
-# def predict_next_words(input_text, k):
-#     # Convert input text to indices and predict next words
-#     input_indices = [stoi[word] for word in input_text.split()[-block_size:]]
-#     input_tensor = torch.tensor(input_indices).unsqueeze(0)
-
-#     with torch.no_grad():
-#         predictions =model1(input_tensor)
-#     top_k_indices = torch.topk(predictions[0,:], k).indices
-#     return [itos[idx.item()] for idx in top_k_indices]
-
-import difflib
 
 def replace_oov_words(input_text):
     processed_words = []
@@ -82,20 +120,18 @@ def replace_oov_words(input_text):
         if word in stoi:
             processed_words.append(word)
         else:
-            # Find closest match
             similar_words = difflib.get_close_matches(word, list(stoi.keys()), n=1)
             replacement = similar_words[0] if similar_words else '<OOV>'
             processed_words.append(replacement)
     return processed_words
 
-
-def predict_next_words(input_text, k):
+def predict_next_words(input_text, k, model, block_size):
     processed_words = replace_oov_words(input_text)
     input_indices = [stoi[word] for word in processed_words[-block_size:]]
     input_tensor = torch.tensor(input_indices).unsqueeze(0)
 
     with torch.no_grad():
-        predictions = model1(input_tensor)
+        predictions = model(input_tensor)
     top_k_indices = torch.topk(predictions[0, :], k).indices
     return [itos[idx.item()] for idx in top_k_indices]
 
@@ -117,11 +153,19 @@ st.markdown("## 🌸Next k word prediction app🌸")
 st.sidebar.header("🔧 Settings")
 
 d1 = st.sidebar.selectbox("Embedding Size", ["32", "64", "128"])
-d2 = st.sidebar.selectbox("Context length", ["3", "5"])
+# d2 = st.sidebar.selectbox("Context length", ["3", "5"])
 # d3 = st.sidebar.selectbox("Random state",["4000002","4000005","4000008"])
 # Textboxes
-block_size=int(d2)
+# block_size=int(d2)
 
+activation_choice = st.sidebar.selectbox("Select Activation Function", ["ReLU", "Tanh"])
+
+# Set context length options based on activation
+context_options = ["3", "5"] if activation_choice == "ReLU" else ["5", "10"]
+d2 = st.sidebar.selectbox("Context Length", context_options)
+
+
+block_size=int(d2)
 t1 = st.sidebar.text_input("Input text", "")
 t2 = st.sidebar.text_input("Number of Words to predict", "")
 
