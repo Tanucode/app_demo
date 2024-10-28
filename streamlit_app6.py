@@ -59,7 +59,7 @@ class NextWordMLP(nn.Module):
     def forward(self, x):
         x = self.emb(x)  # Convert word indices to embeddings
         x = x.view(x.shape[0], -1)  # Flatten embeddings
-        x = torch.relu(self.lin1(x))  # First layer + ReLU activation
+        x = torch.tanh(self.lin1(x))  # First layer + ReLU activation
         x = self.lin2(x)  # Second layer, output vocab_size logits
         return x
 
@@ -134,7 +134,7 @@ if st.button("Predict"):
     # model_number=emb[str(d1)]*3+context[str(d2)]
     model_number=0
     # Load the pre-trained weights into the new model
-    model1.load_state_dict(torch.load(f"./model_e{int(d1)}_c{int(d2)}.pt"), strict=False)
+    model1.load_state_dict(torch.load(f"./model_e{int(d1)}_c{int(d2)}_Tanh.pt"), strict=False)
   
     model1.eval()
 # Use the scripted model for prediction
